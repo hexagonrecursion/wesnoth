@@ -3534,12 +3534,14 @@ In your case, your system interprets your arguments as:
             # Attempt a spell-check
             if dospellcheck:
                 try:
-                    import enchant
+                    import enchant, json
                     d = enchant.Dict("en_US")
                     checker = d.provider.desc
                     if checker.endswith(" Provider"):
                         checker = checker[:-9]
                     print("# Spell-checking with", checker)
+                    open('declared_spellings.json', 'w') as fd:
+                        json.dump(declared_spellings, fd)
                     for word in declared_spellings["GLOBAL"]:
                         d.add_to_session(word.lower())
                     for directory in arguments:
