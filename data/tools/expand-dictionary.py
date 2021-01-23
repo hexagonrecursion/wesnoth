@@ -2961,14 +2961,11 @@ def spellcheck(fn, d):
             local_spellings += declared_spellings.get(up,[])
             up = os.path.dirname(up)
     local_spellings = [w for w in local_spellings if not d.check(w)]
-    #if local_spellings:
-    #    print("%s: inherited local spellings: %s" % (fn, local_spellings))
     for word in local_spellings:
         d.add_to_session(word)
 
     # Process this individual file
     for nav in WmllintIterator(filename=fn):
-        #print("element=%s, text=%s" % (nav.element, repr(nav.text)))
         # Recognize local spelling exceptions
         if not nav.element and "#" in nav.text:
             comment = nav.text[nav.text.index("#"):]
@@ -2981,8 +2978,6 @@ def spellcheck(fn, d):
                         local_spellings.append(word)
                     else:
                         nav.printError("spelling '%s' already declared" % word)
-    #if local_spellings:
-    #    print("%s: with this file's local spellings: %s" % (fn,local_spellings))
 
     for nav in WmllintIterator(filename=fn):
         # Spell-check message and story parts
@@ -3007,8 +3002,6 @@ def spellcheck(fn, d):
             if value and not d.check(value):
                 d.add_to_session(value)
                 local_spellings.append(value)
-    #if local_spellings:
-    #    print("%s: slated for removal: %s" % (fn, local_spellings))
     for word in local_spellings:
         try:
             d.remove_from_session(word)
@@ -3043,19 +3036,11 @@ def allcfgfiles(directory):
     return map(os.path.normpath, datafiles)
 
 if __name__ == '__main__':
-    clean = False
-    diffs = False
-    dryrun = True
     missingside = True
-    revert = False
     stringfreeze = False
     stripcr = False
     verbose = 1
-    dospellcheck = True
-    inconsistency = True
     arguments = sys.argv[1:]
-
-    post15 = False
 
     try:
         if not arguments:
@@ -3065,7 +3050,7 @@ if __name__ == '__main__':
 
         if True:
             # Attempt a spell-check
-            if dospellcheck:
+            if True:
                 try:
                     import enchant
                     d = enchant.Dict("en_US")
