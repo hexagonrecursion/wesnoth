@@ -3054,8 +3054,8 @@ if __name__ == '__main__':
     arguments = sys.argv[1:]
     
     import json
-    with open(declared_spellings) as fd:
-        
+    with open('declared_spellings.json') as fd:
+        declared_spellings = json.load(fd)
 
     try:
         if not arguments:
