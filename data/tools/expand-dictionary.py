@@ -3014,7 +3014,7 @@ def spellcheck(fn, d):
         for i, l in enumerate(lines):
             if to_insert[i]:
                 print(to_insert[i], file=fd)
-            print(l, file=fd)
+            print(l, file=fd, end='')
 
 vctypes = (".svn", ".git", ".hg")
 
