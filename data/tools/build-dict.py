@@ -3540,7 +3540,7 @@ In your case, your system interprets your arguments as:
                     if checker.endswith(" Provider"):
                         checker = checker[:-9]
                     print("# Spell-checking with", checker)
-                    open('declared_spellings.json', 'w') as fd:
+                    with open('declared_spellings.json', 'w') as fd:
                         json.dump(declared_spellings, fd)
                     for word in declared_spellings["GLOBAL"]:
                         d.add_to_session(word.lower())
