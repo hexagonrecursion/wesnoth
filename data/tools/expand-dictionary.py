@@ -3013,7 +3013,7 @@ def spellcheck(fn, d):
     with open(fn, 'w') as fd:
         for i, l in enumerate(lines):
             if to_insert[i]:
-                print(to_insert[i], file=fd)
+                print('#wmllint: local spellings', to_insert[i].join(' '), file=fd)
             print(l, file=fd, end='')
 
 vctypes = (".svn", ".git", ".hg")
