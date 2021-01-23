@@ -3052,6 +3052,10 @@ if __name__ == '__main__':
     stripcr = False
     verbose = 1
     arguments = sys.argv[1:]
+    
+    import json
+    with open(declared_spellings) as fd:
+        
 
     try:
         if not arguments:
