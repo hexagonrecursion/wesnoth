@@ -2945,7 +2945,7 @@ def inner_spellcheck(nav, value, spelldict):
             continue
         if re.match("s+h+", lowered):
             continue
-        nav.printError('possible misspelling "%s"' % token)
+        yield lowered
 
 
 def spellcheck(fn, d):
@@ -2979,6 +2979,7 @@ def spellcheck(fn, d):
                     else:
                         nav.printError("spelling '%s' already declared" % word)
 
+    to_insert = defaultdict(list)
     for nav in WmllintIterator(filename=fn):
         # Spell-check message and story parts
         if nav.element in spellcheck_these:
@@ -2994,7 +2995,7 @@ def spellcheck(fn, d):
             (key, prefix, value, comment) = parse_attribute(nav.text)
             if "no spellcheck" in comment:
                 continue
-            inner_spellcheck(nav, value, d)
+            to_insert[nav.lineno].extend(inner_spellcheck(nav, value, d))
         # Take exceptions from the id fields
         if nav.element == "id=":
             (key, prefix, value, comment) = parse_attribute(nav.text)
@@ -3007,6 +3008,13 @@ def spellcheck(fn, d):
             d.remove_from_session(word)
         except AttributeError:
             print("Caught AttributeError when trying to remove %s from dict" % word)
+    with open(fn) as fd:
+        lines = list(fd)
+    with open(fn, 'w') as fd:
+        for i, l in enumerate(lines):
+            if to_insert[i]:
+                print(to_insert[i], file=fd)
+            print(l, file=fd)
 
 vctypes = (".svn", ".git", ".hg")
 
