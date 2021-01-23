@@ -3010,10 +3010,13 @@ def spellcheck(fn, d):
             print("Caught AttributeError when trying to remove %s from dict" % word)
     with open(fn) as fd:
         lines = list(fd)
+    inserted = set()
     with open(fn, 'w') as fd:
         for i, l in enumerate(lines):
-            if to_insert[i]:
-                print('#wmllint: local spellings', ' '.join(to_insert[i]), file=fd)
+            spellings = set(to_insert[i]) - inserted
+            inserted = inserted | spellings
+            if spellings:
+                print('#wmllint: local spellings', ' '.join(spellings), file=fd)
             print(l, file=fd, end='')
 
 vctypes = (".svn", ".git", ".hg")
